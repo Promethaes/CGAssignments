@@ -1,4 +1,5 @@
 #include "Cappuccino/Application.h"
+#include "MainScene.h"
 
 using Application = Cappuccino::Application;
 using FontManager = Cappuccino::FontManager;
@@ -11,7 +12,7 @@ using Texture     = Cappuccino::Texture;
 #pragma region PROGRAM SETTINGS
 
 constexpr GLuint  SCR_WIDTH = 1600;
-constexpr GLuint  SCR_HEIGHT = 1200;
+constexpr GLuint  SCR_HEIGHT = 1000;
 constexpr GLchar* SCR_TITLE = "CGAssignments";
 
 #pragma endregion
@@ -28,7 +29,7 @@ int main() {
 
 	if(!Application::isInstantiated()) {
 
-		Cappuccino::Viewport view{ glm::vec4(0.0f,0.5f,0.0f,1.0f),glm::vec4(0.0f,0.0f,SCR_WIDTH,SCR_HEIGHT),[]() {} };
+		Cappuccino::Viewport view{ glm::vec4(0.1f,0.1f,0.1f,1.0f),glm::vec4(0.0f,0.0f,SCR_WIDTH,SCR_HEIGHT),[]() {} };
 
 		Application* application = new Application(SCR_WIDTH, SCR_HEIGHT, SCR_TITLE, {view});
 		application->init();
@@ -44,9 +45,8 @@ int main() {
 		SoundSystem::setDefaultPath("./Assets/Sounds/");
 		Texture::setDefaultPath("./Assets/Textures/");
 
-
-
-
+		MainScene* m = new MainScene(true);
+		m->init();
 
 
 		application->run();

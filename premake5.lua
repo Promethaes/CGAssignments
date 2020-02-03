@@ -6,14 +6,14 @@ workspace ("CGAssignments")
 	platforms "x64"
 	
 	includedirs {
-		os.getenv("CappuccinoPath") .. "/Cappuccino/include",
-		os.getenv("CappuccinoPath") .. "/Externals/fmod/include",
-		os.getenv("CappuccinoPath") .. "/Externals/freetype/include",
-		os.getenv("CappuccinoPath") .. "/Externals/glad/include",
-		os.getenv("CappuccinoPath") .. "/Externals/glfw3/include",
-		os.getenv("CappuccinoPath") .. "/Externals/glm/include",
-		os.getenv("CappuccinoPath") .. "/Externals/imgui/include",
-        os.getenv("CappuccinoPath") .. "/Externals/stb/include",
+		"./Engine",
+		"./Engine/Externals/fmod/include",
+		"./Engine/Externals/freetype/include",
+		"./Engine/Externals/glad/include",
+		"./Engine/Externals/glfw3/include",
+		"./Engine/Externals/glm/include",
+		"./Engine/Externals/imgui/include",
+        "./Engine/Externals/stb/include",
         "./include"
 	}
 

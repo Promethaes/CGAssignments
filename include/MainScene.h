@@ -47,6 +47,6 @@ private:
 	Cappuccino::Camera _c;
 	Cappuccino::Shader* _mainShader = nullptr;
 	Empty* _ghoul = nullptr;
-	Empty* _bullet = nullptr;
-
+	Empty* _gun = nullptr;
+	std::vector<Empty*> _lamps;
 };

@@ -36,7 +36,7 @@ void MainScene::childUpdate(float dt)
 
 	//_lights.back()._position.x = sinf(elapsedTime);
 	//sendLights();
-	//
+	////
 	//_ghoul->_rigidBody._position.y = sinf(elapsedTime);
 	//_bullet->_rigidBody._position.x = cosf(elapsedTime);
 
@@ -46,7 +46,9 @@ void MainScene::childUpdate(float dt)
 bool MainScene::init()
 {
 	if (_lights.empty())
-		_lights.push_back(PointLight(glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3(0.5f, 0.5f, 0.5f), glm::vec3(0.5f, 0.5f, 0.5f), glm::vec3(0.5f, 0.5f, 0.5f), 64.0f));
+		_lights.push_back(PointLight(glm::vec3(-1.0f, 2.0f, 0.0f), glm::vec3(0.5f, 0.5f, 0.5f), glm::vec3(0.5f, 0.5f, 0.5f), glm::vec3(0.5f, 0.5f, 0.5f), 64.0f));
+	_lamps.clear();
+	
 	//make the shader
 	if (_mainShader == nullptr) {
 		_mainShader = new Cappuccino::Shader("mainVert.vert", "mainFrag.frag");
@@ -59,6 +61,12 @@ bool MainScene::init()
 		_mainShader->setUniform("material.heightMap", 4);
 	}
 
+	for (unsigned i = 0; i < _lights.size(); i++) {
+		_lamps.push_back(new Empty(*_mainShader, { new Cappuccino::Texture("red.png", Cappuccino::TextureType::DiffuseMap) }, { new Cappuccino::Mesh("FromPrimordial/bullet.obj") }));
+		_lamps.back()->_rigidBody._position = _lights[i]._position;
+		_lamps.back()->setActive(true);
+	}
+
 	sendLights();
 
 	//set the cursor so that its locked to the window
@@ -66,18 +74,19 @@ bool MainScene::init()
 
 	//initialize the ghoul and the bullet
 	if (_ghoul == nullptr) {
-		_ghoul = new Empty(*_mainShader, { new Cappuccino::Texture("red.png",Cappuccino::TextureType::DiffuseMap),
-			new Cappuccino::Texture("red.png",Cappuccino::TextureType::SpecularMap) }, { new Cappuccino::Mesh("FromPrimordial/Crawler.obj") });
+		_ghoul = new Empty(*_mainShader, { new Cappuccino::Texture("CrawlerDiffuse.png",Cappuccino::TextureType::DiffuseMap),
+			new Cappuccino::Texture("CrawlerNorm.png",Cappuccino::TextureType::NormalMap) }, { new Cappuccino::Mesh("FromPrimordial/Crawler.obj") });
 	}
-	if (_bullet == nullptr) {
-		_bullet = new Empty(*_mainShader, { new Cappuccino::Texture("red.png",Cappuccino::TextureType::DiffuseMap),
-			new Cappuccino::Texture("red.png",Cappuccino::TextureType::SpecularMap) }, { new Cappuccino::Mesh("FromPrimordial/bullet.obj") });
-		_bullet->_rigidBody._position += glm::vec3(1.0f, 1.0f, 1.0f);
-		_bullet->_transform.scale(glm::vec3(1.0f, 1.0f, 1.0f), 1.5f);
+	if (_gun == nullptr) {
+		_gun = new Empty(*_mainShader, { new Cappuccino::Texture("autoRifleDiffuse.png",Cappuccino::TextureType::DiffuseMap),
+			new Cappuccino::Texture("autoRifleNormal.png",Cappuccino::TextureType::NormalMap),new Cappuccino::Texture("autoRifleEmission.png",Cappuccino::TextureType::EmissionMap)
+			}, { new Cappuccino::Mesh("FromPrimordial/autoRifle.obj") });
+		_gun->_rigidBody._position += glm::vec3(1.0f, 1.0f, 1.0f);
+		_gun->_transform.scale(glm::vec3(1.0f, 1.0f, 1.0f), 1.5f);
 	}
 
 	_ghoul->setActive(true);
-	_bullet->setActive(true);
+	_gun->setActive(true);
 
 	_initialized = true;
 	_shouldExit = false;
@@ -87,7 +96,7 @@ bool MainScene::init()
 bool MainScene::exit()
 {
 	_ghoul->setActive(false);
-	_bullet->setActive(false);
+	_gun->setActive(false);
 
 	_initialized = false;
 	_shouldExit = true;
@@ -109,6 +118,8 @@ void MainScene::sendLights()
 		_mainShader->setUniform("pointLight[" + std::to_string(i) + "].constant", _lights[i]._constant);
 		_mainShader->setUniform("pointLight[" + std::to_string(i) + "].linear", _lights[i]._linear);
 		_mainShader->setUniform("pointLight[" + std::to_string(i) + "].quadratic", _lights[i]._quadratic);
+
+		_mainShader->setUniform("material.shininess", _lights[i]._spec);
 	}
 }
 

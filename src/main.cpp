@@ -1,5 +1,6 @@
 #include "Cappuccino/Application.h"
 #include "MainScene.h"
+#include "Cappuccino/FrameBuffer.h"
 
 using Application = Cappuccino::Application;
 using FontManager = Cappuccino::FontManager;
@@ -44,6 +45,19 @@ int main() {
 		Shader::setDefaultPath("./Assets/Shaders/");
 		SoundSystem::setDefaultPath("./Assets/Sounds/");
 		Texture::setDefaultPath("./Assets/Textures/");
+
+
+		//Cappuccino::Framebuffer test(glm::vec2(1600.0f, 1000.0f), 2,
+		//	[]()
+		//{
+		//	CAPP_GL_CALL(glEnable(GL_DEPTH_TEST));
+		//	CAPP_GL_CALL(glEnable(GL_CULL_FACE));
+		//	CAPP_GL_CALL(glEnable(GL_BLEND));
+		//	CAPP_GL_CALL(glEnable(GL_SCISSOR_TEST));
+		//	CAPP_GL_CALL(glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA));
+		//	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		//
+		//});
 
 		MainScene* m = new MainScene(true);
 		m->init();

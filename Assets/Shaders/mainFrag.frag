@@ -27,7 +27,7 @@ uniform PointLight pointLight[MAX_LIGHTS];
 uniform Material material;
 in vec3 fragPos; 
 in vec2 texCoords;
-in vec3 viewDir;
+in vec3 tViewDir;
 in mat3 TBN;
 
 vec3 calculatePointLight(PointLight light, vec3 normal, vec3 fragPos, vec3 vD);  
@@ -38,7 +38,7 @@ void main()
 	vec3 norm = texture(material.normalMap,texCoords).rgb;
 	norm = normalize(norm*2.0-1.0);
 	norm = normalize(TBN*norm);
-	vec3 fViewDir = normalize(viewDir);
+	vec3 fViewDir = normalize(tViewDir);
 
 	vec3 light = vec3(0.0);
 	    for(int i = 0 ; i < numLights;i++)

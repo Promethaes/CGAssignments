@@ -1,6 +1,7 @@
 #include "MainScene.h"
 #include "LUTLoader.h"
 #include "Cappuccino/FrameBuffer.h"
+#include <iostream>
 
 MainScene::MainScene(bool yn)
 	:Cappuccino::Scene(yn), _in(true, std::nullopt)

@@ -38,7 +38,8 @@ void MainScene::childUpdate(float dt)
 	//sendLights();
 	
 	//_ghoul->_rigidBody._position.y = sinf(elapsedTime);
-	//_gun->_rigidBody._position.x = cosf(elapsedTime);
+	_ghoul->_transform.rotate(glm::vec3(0.0f, 1.0f, 0.0f), 90*dt);
+	_gun->_rigidBody._position.x += cosf(elapsedTime)/100.0f;
 
 
 }
@@ -46,7 +47,7 @@ void MainScene::childUpdate(float dt)
 bool MainScene::init()
 {
 	if (_lights.empty())
-		_lights.push_back(PointLight(glm::vec3(-1.0f, 2.0f, 0.0f), glm::vec3(0.5f, 0.5f, 0.5f), glm::vec3(0.5f, 0.5f, 0.5f), glm::vec3(0.5f, 0.5f, 0.5f), 64.0f));
+		_lights.push_back(PointLight(glm::vec3(-1.0f, 2.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3(1.0f, 1.0f, 1.0f), 64.0f));
 	_lamps.clear();
 	
 	//make the shader
@@ -152,7 +153,7 @@ Empty::Empty(const Cappuccino::Shader& SHADER, const std::vector<Cappuccino::Tex
 
 void Empty::childUpdate(float dt)
 {
-	_transform.rotate(glm::vec3(0.0f, 1.0f, 0.0f), dt * 90.0f);
+	//_transform.rotate(glm::vec3(0.0f, 1.0f, 0.0f), dt * 90.0f);
 }
 
 PointLight::PointLight(const glm::vec3& position, const glm::vec3& ambient, const glm::vec3& diffuse, const glm::vec3& specular, float spec)

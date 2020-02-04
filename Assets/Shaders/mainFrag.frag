@@ -58,11 +58,16 @@ void main()
 }
 
 vec4 calculateRimLight(PointLight light,vec3 fragPos,vec3 norm){
-//rim lighting
-    vec3 V = normalize(light.position - fragPos);
-    float rim = 1.0f - max(dot(norm,V),0.0f);
-    rim = smoothstep(0.5f,1.0f,rim);
-    return vec4(rim,rim,rim,1.0f);
+    //rim lighting
+    float rim = 1.0f - max(dot(norm,normalize(tViewDir)),0.0f);
+    rim = smoothstep(0.9f,1.0f,rim);
+    rim = rim / 5.0f;//scale it so it doesn't make everything white
+    
+    float distance = length(light.position - fragPos);
+   	float attenuation = 1.0 / (light.constant + light.linear * distance + light.quadratic * (distance * distance));
+    rim*=attenuation;
+
+    return vec4(light.diffuse*rim,1.0f); 
 }
 
 vec3 calculatePointLight(PointLight light, vec3 normal, vec3 fragPos,vec3 vD) {
@@ -89,5 +94,5 @@ vec3 calculatePointLight(PointLight light, vec3 normal, vec3 fragPos,vec3 vD) {
     diffuse*=attenuation;
     specular*=attenuation;
 
-    return (diffuse + specular);
+    return (ambient + diffuse + specular);
 }

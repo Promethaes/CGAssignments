@@ -47,7 +47,22 @@ int main() {
 		Texture::setDefaultPath("./Assets/Textures/");
 		//LUT::setDefaultPath("./Assets/LUTs/");
 
-
+		//char* frag = R"(#version 420 core
+		//out vec4 FragColor;
+  		//
+		//in vec2 TexCoords;
+		//
+		//uniform sampler2D screenTexture;
+		//
+		//void main()
+		//{
+		//    vec3 col = vec3(texture(screenTexture, TexCoords.st));
+		//	//this is HDR
+		//	col = vec3(1.0) - exp(-col*1.0);//1 is exposure
+		//	//this is HDR
+		//    FragColor = vec4(col, 1.0);
+		//})";
+		//
 		//Cappuccino::Framebuffer test(glm::vec2(1600.0f, 1000.0f), 2,
 		//	[]()
 		//{

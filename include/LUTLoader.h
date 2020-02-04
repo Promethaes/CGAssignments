@@ -25,6 +25,7 @@ namespace Cappuccino {
 		std::vector<glm::vec3> _domainMax;
 		std::vector<glm::vec3> _rgbValues;
 
+		unsigned _textureID = 0;
 	protected:
 		static std::string _lutDirectory;
 		std::string _path;

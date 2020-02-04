@@ -59,7 +59,6 @@ void main()
 
 vec4 calculateRimLight(PointLight light,vec3 fragPos,vec3 norm){
     //rim lighting
-    vec3 V = normalize(light.position - fragPos);
     float rim = 1.0f - max(dot(norm,normalize(tViewDir)),0.0f);
     rim = smoothstep(0.9f,1.0f,rim);
     rim = rim / 5.0f;//scale it so it doesn't make everything white

@@ -12,26 +12,89 @@ void MainScene::childUpdate(float dt)
 	/*
 	Toggle Keys
 	*/
-	if (_in.keyboard->keyPressed(Cappuccino::KeyEvent::ZERO))
-		true;
-	if (_in.keyboard->keyPressed(Cappuccino::KeyEvent::ONE))
-		true;
-	if (_in.keyboard->keyPressed(Cappuccino::KeyEvent::TWO))
-		true;
-	if (_in.keyboard->keyPressed(Cappuccino::KeyEvent::THREE))
-		true;
-	if (_in.keyboard->keyPressed(Cappuccino::KeyEvent::FOUR))
-		true;
-	if (_in.keyboard->keyPressed(Cappuccino::KeyEvent::FIVE))
-		true;
-	if (_in.keyboard->keyPressed(Cappuccino::KeyEvent::SIX))
-		true;
-	if (_in.keyboard->keyPressed(Cappuccino::KeyEvent::SEVEN))
-		true;
-	if (_in.keyboard->keyPressed(Cappuccino::KeyEvent::EIGHT))
-		true;
-	if (_in.keyboard->keyPressed(Cappuccino::KeyEvent::NINE))
-		true;
+
+	if (_customTimer) {
+		_customTimer += dt;
+		if (_customTimer >= 1.0f)
+			_customTimer = 0.0f;
+	}
+	if (_in.keyboard->keyPressed(Cappuccino::KeyEvent::ZERO)) {
+		if(!_customTimer)
+			_custom ^= 1;
+	}
+	if (_in.keyboard->keyPressed(Cappuccino::KeyEvent::ONE)) {
+		_diffuse = false;
+		_ambient = false;
+		_specular = false;
+		_rim = false;
+	}
+	if (_in.keyboard->keyPressed(Cappuccino::KeyEvent::TWO)) {
+		_diffuse = false;
+		_ambient = true;
+		_specular = false;
+		_rim = false;
+	}
+	if (_in.keyboard->keyPressed(Cappuccino::KeyEvent::THREE)) {
+		_diffuse = false;
+		_ambient = false;
+		_specular = true;
+		_rim = false;
+	}
+	if (_in.keyboard->keyPressed(Cappuccino::KeyEvent::FOUR)) {
+		_diffuse = false;
+		_ambient = false;
+		_specular = true;
+		_rim = true;
+	}
+	if (_in.keyboard->keyPressed(Cappuccino::KeyEvent::FIVE)) {
+		_diffuse = false;
+		_ambient = true;
+		_specular = true;
+		_rim = true;
+	}
+	if (_diffuseTimer){
+		_diffuseTimer += dt;
+		if (_diffuseTimer >= 1.0f)
+			_diffuseTimer = 0.0f;
+	}
+		
+	if (_in.keyboard->keyPressed(Cappuccino::KeyEvent::SIX)) {
+		if(!_diffuseTimer)
+			_diffuseRampShading ^= 1;
+	}
+
+	if (_specularTimer) {
+		_specularTimer += dt;
+		if (_specularTimer >= 1.0f)
+			_specularTimer = 0.0f;
+	}
+
+	if (_in.keyboard->keyPressed(Cappuccino::KeyEvent::SEVEN)) {
+		if(!_specularTimer)
+			_specularRampShading ^= 1;
+	}
+	if (_warmTimer) {
+		_warmTimer += dt;
+		if (_warmTimer >= 1.0f)
+			_warmTimer = 0.0f;
+	}
+	if (_in.keyboard->keyPressed(Cappuccino::KeyEvent::EIGHT)) {
+		if(!_warmTimer)
+			_warm ^= 1;
+	}
+
+	if (_coolTimer) {
+		_coolTimer += dt;
+		if (_coolTimer >= 1.0f)
+			_coolTimer = 0.0f;
+	}
+
+	if (_in.keyboard->keyPressed(Cappuccino::KeyEvent::NINE)) {
+		if(!_coolTimer)
+			_cool ^= 1;
+	}
+
+
 
 
 

@@ -23,7 +23,7 @@ namespace Cappuccino {
 		char inputString[128];
 
 		std::string titleData;
-		unsigned int sizeData;
+		int sizeData;
 		glm::vec3 domainMinData;
 		glm::vec3 domainMaxData;
 		std::vector<glm::vec3> lookupData;
@@ -70,6 +70,25 @@ namespace Cappuccino {
 			_rgbValues.push_back(lookupData[i]);
 
 		input.close();
+
+		//load texture
+
+
+		glEnable(GL_TEXTURE_3D);
+		glGenTextures(1, &_textureID);
+		glBindTexture(GL_TEXTURE_3D, _textureID);
+
+		glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+		glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+		glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_WRAP_R, GL_REPEAT);
+
+		glTexImage3D(GL_TEXTURE_3D, 0, GL_RGB,_lutSize, _lutSize, _lutSize, 0, GL_RGB, GL_FLOAT, _rgbValues.data());
+		glBindTexture(GL_TEXTURE_3D, 0);
+		glDisable(GL_TEXTURE_3D);
+
+
 		return loaded = true;
 	}
 

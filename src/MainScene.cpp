@@ -1,4 +1,5 @@
 #include "MainScene.h"
+#include "LUTLoader.h"
 
 MainScene::MainScene(bool yn)
 	:Cappuccino::Scene(yn), _in(true, std::nullopt)
@@ -127,7 +128,8 @@ void MainScene::childUpdate(float dt)
 	//sendLights();
 	
 	//_ghoul->_rigidBody._position.y = sinf(elapsedTime);
-	//_gun->_rigidBody._position.x = cosf(elapsedTime);
+	_ghoul->_transform.rotate(glm::vec3(0.0f, 1.0f, 0.0f), 90*dt);
+	_gun->_rigidBody._position.x += cosf(elapsedTime)/100.0f;
 
 
 }
@@ -135,7 +137,7 @@ void MainScene::childUpdate(float dt)
 bool MainScene::init()
 {
 	if (_lights.empty())
-		_lights.push_back(PointLight(glm::vec3(-1.0f, 2.0f, 0.0f), glm::vec3(0.5f, 0.5f, 0.5f), glm::vec3(0.5f, 0.5f, 0.5f), glm::vec3(0.5f, 0.5f, 0.5f), 64.0f));
+		_lights.push_back(PointLight(glm::vec3(-1.0f, 2.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f),10.f*glm::vec3(1.0f, 0.0f, 0.0f), 10.f*glm::vec3(1.0f, 0.0f, 1.0f), 64.0f));
 	_lamps.clear();
 	
 	//make the shader
@@ -148,6 +150,12 @@ bool MainScene::init()
 		_mainShader->setUniform("material.normalMap", 2);
 		_mainShader->setUniform("material.emissionMap", 3);
 		_mainShader->setUniform("material.heightMap", 4);
+
+		Cappuccino::LUT lut("Warm.CUBE");
+		lut.loadLUT();
+		glEnable(GL_TEXTURE_3D);
+		glActiveTexture(GL_TEXTURE1);
+		glBindTexture(GL_TEXTURE_3D, lut._textureID);
 	}
 
 	for (unsigned i = 0; i < _lights.size(); i++) {
@@ -241,7 +249,7 @@ Empty::Empty(const Cappuccino::Shader& SHADER, const std::vector<Cappuccino::Tex
 
 void Empty::childUpdate(float dt)
 {
-	_transform.rotate(glm::vec3(0.0f, 1.0f, 0.0f), dt * 90.0f);
+	//_transform.rotate(glm::vec3(0.0f, 1.0f, 0.0f), dt * 90.0f);
 }
 
 PointLight::PointLight(const glm::vec3& position, const glm::vec3& ambient, const glm::vec3& diffuse, const glm::vec3& specular, float spec)

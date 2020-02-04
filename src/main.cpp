@@ -47,19 +47,46 @@ int main() {
 		Texture::setDefaultPath("./Assets/Textures/");
 		//LUT::setDefaultPath("./Assets/LUTs/");
 
+		char* frag = R"(#version 420 core
+		out vec4 FragColor;
+  		
+		in vec2 TexCoords;
+		
+		uniform sampler2D screenTexture;
+		uniform sampler3D LUT;
 
-		//Cappuccino::Framebuffer test(glm::vec2(1600.0f, 1000.0f), 2,
-		//	[]()
-		//{
-		//	CAPP_GL_CALL(glEnable(GL_DEPTH_TEST));
-		//	CAPP_GL_CALL(glEnable(GL_CULL_FACE));
-		//	CAPP_GL_CALL(glEnable(GL_BLEND));
-		//	CAPP_GL_CALL(glEnable(GL_SCISSOR_TEST));
-		//	CAPP_GL_CALL(glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA));
-		//	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		//
-		//});
+		uniform int LUTsize;
+		void main()
+		{
+		    vec3 col = vec3(texture(screenTexture, TexCoords.st));
+			//this is HDR
+			col = vec3(1.0) - exp(-col*1.0f);//1 is exposure
 
+			float LUTscale = (LUTsize - 1.0f)/LUTsize;
+			float LUToffset = 1.0f / (2.0f * LUTsize);
+			
+			vec4 fColour = texture(LUT,LUTscale* col + LUToffset);
+
+
+		    FragColor = fColour;
+
+		})";
+		
+		Cappuccino::Framebuffer test(glm::vec2(1600.0f, 1000.0f), 1,
+			[]()
+		{
+			CAPP_GL_CALL(glEnable(GL_DEPTH_TEST));
+			CAPP_GL_CALL(glEnable(GL_CULL_FACE));
+			CAPP_GL_CALL(glEnable(GL_BLEND));
+			CAPP_GL_CALL(glEnable(GL_SCISSOR_TEST));
+			CAPP_GL_CALL(glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA));
+			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		
+		},std::nullopt,frag);
+
+		Cappuccino::Framebuffer::_fbShader->use();
+		Cappuccino::Framebuffer::_fbShader->setUniform("screenTexture", 0);
+		Cappuccino::Framebuffer::_fbShader->setUniform("LUT", 1);
 		MainScene* m = new MainScene(true);
 		m->init();
 

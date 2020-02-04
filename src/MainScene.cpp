@@ -48,7 +48,7 @@ void MainScene::childUpdate(float dt)
 bool MainScene::init()
 {
 	if (_lights.empty())
-		_lights.push_back(PointLight(glm::vec3(-1.0f, 2.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f),10.f*glm::vec3(1.0f, 0.0f, 0.0f), 10.f*glm::vec3(1.0f, 0.0f, 1.0f), 64.0f));
+		_lights.push_back(PointLight(glm::vec3(-1.0f, 2.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f),10.f*glm::vec3(1.0f, 1.0f, 1.0f), 10.f*glm::vec3(1.0f, 1.0f, 1.0f), 64.0f));
 	_lamps.clear();
 	
 	//make the shader
@@ -62,7 +62,7 @@ bool MainScene::init()
 		_mainShader->setUniform("material.emissionMap", 3);
 		_mainShader->setUniform("material.heightMap", 4);
 
-		Cappuccino::LUT lut("Cool.CUBE");
+		Cappuccino::LUT lut("Custom.CUBE");
 		lut.loadLUT();
 		glEnable(GL_TEXTURE_3D);
 		glActiveTexture(GL_TEXTURE1);

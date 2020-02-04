@@ -29,9 +29,11 @@ in vec3 fragPos;
 in vec2 texCoords;
 in vec3 tViewDir;
 in mat3 TBN;
+in mat4 outView;
 
 vec3 calculatePointLight(PointLight light, vec3 normal, vec3 fragPos, vec3 vD);  
 
+vec4 calculateRimLight(PointLight light,vec3 fragPos,vec3 norm);
 void main()
 {
 	
@@ -40,21 +42,33 @@ void main()
 	norm = normalize(TBN*norm);
 	vec3 fViewDir = normalize(tViewDir);
 
+
 	vec3 light = vec3(0.0);
-	    for(int i = 0 ; i < numLights;i++)
+	    for(int i = 0 ; i < numLights;i++){
 	        light += calculatePointLight(pointLight[i],norm,fragPos,fViewDir);
+            light += vec3(calculateRimLight(pointLight[i],fragPos,norm)).xyz;
+        }
 	    
 
 	vec3 emission = texture(material.emissionMap,texCoords).rgb;
 	light += emission;
 
 	outColour = vec4(light, 1.0);
+
+}
+
+vec4 calculateRimLight(PointLight light,vec3 fragPos,vec3 norm){
+//rim lighting
+    vec3 V = normalize(light.position - fragPos);
+    float rim = 1.0f - max(dot(norm,V),0.0f);
+    rim = smoothstep(0.5f,1.0f,rim);
+    return vec4(rim,rim,rim,1.0f);
 }
 
 vec3 calculatePointLight(PointLight light, vec3 normal, vec3 fragPos,vec3 vD) {
 
   	vec3 lightDir = normalize(light.position - fragPos);
-    
+
     // diffuse shading
     float diff = max(dot(normal, lightDir), 0.0f);
     

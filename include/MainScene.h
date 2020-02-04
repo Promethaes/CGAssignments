@@ -75,4 +75,5 @@ private:
 	Cappuccino::LUT lut = Cappuccino::LUT("Warm.CUBE");
 	Cappuccino::LUT lut1 = Cappuccino::LUT("Cool.CUBE");
 	Cappuccino::LUT lut2 = Cappuccino::LUT("Custom.CUBE");
+	Cappuccino::LUT lut3 = Cappuccino::LUT("Blank.CUBE");
 };

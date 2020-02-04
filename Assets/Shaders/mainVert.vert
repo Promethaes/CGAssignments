@@ -12,9 +12,11 @@ out vec3 fragPos;
 out vec3 tViewDir;
 out vec2 texCoords;
 out mat3 TBN;
+out mat4 outView;
 
 void main()
 {
+	outView = view;
 	texCoords = uvs;
 
 	mat4 temp = view*model;

@@ -61,12 +61,8 @@ int main() {
 		    vec3 col = vec3(texture(screenTexture, TexCoords.st));
 			//this is HDR
 			col = vec3(1.0) - exp(-col*1.0f);//1 is exposure
-
-			float LUTscale = (LUTsize - 1.0f)/LUTsize;
-			float LUToffset = 1.0f / (2.0f * LUTsize);
-			
 			vec4 fColour = texture(LUT,col);
-
+			
 		    FragColor = fColour;
 
 		})";

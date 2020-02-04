@@ -9,6 +9,32 @@ MainScene::MainScene(bool yn)
 
 void MainScene::childUpdate(float dt)
 {
+	/*
+	Toggle Keys
+	*/
+	if (_in.keyboard->keyPressed(Cappuccino::KeyEvent::ZERO))
+		true;
+	if (_in.keyboard->keyPressed(Cappuccino::KeyEvent::ONE))
+		true;
+	if (_in.keyboard->keyPressed(Cappuccino::KeyEvent::TWO))
+		true;
+	if (_in.keyboard->keyPressed(Cappuccino::KeyEvent::THREE))
+		true;
+	if (_in.keyboard->keyPressed(Cappuccino::KeyEvent::FOUR))
+		true;
+	if (_in.keyboard->keyPressed(Cappuccino::KeyEvent::FIVE))
+		true;
+	if (_in.keyboard->keyPressed(Cappuccino::KeyEvent::SIX))
+		true;
+	if (_in.keyboard->keyPressed(Cappuccino::KeyEvent::SEVEN))
+		true;
+	if (_in.keyboard->keyPressed(Cappuccino::KeyEvent::EIGHT))
+		true;
+	if (_in.keyboard->keyPressed(Cappuccino::KeyEvent::NINE))
+		true;
+
+
+
 	//calculate camera movement
 	auto moveForce = glm::vec3(0.0f, 0.0f, 0.0f);
 	if (_in.keyboard->keyPressed(Cappuccino::KeyEvent::W))

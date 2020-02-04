@@ -49,4 +49,14 @@ private:
 	Empty* _ghoul = nullptr;
 	Empty* _gun = nullptr;
 	std::vector<Empty*> _lamps;
+
+
+
+	/*
+	Booleans
+	*/
+	bool _ambient = true;
+	bool _specular = true;
+	bool _rim = true;
+	bool _rampShading = true;
 };

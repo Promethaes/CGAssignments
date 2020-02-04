@@ -2,6 +2,7 @@
 #include "Cappuccino/SceneManager.h"
 #include "Cappuccino/GameObject.h"
 #include "Cappuccino/CappInput.h"
+#include "LUTLoader.h"
 
 class PointLight {
 public:
@@ -71,4 +72,7 @@ private:
 	int _custom = false;
 	float _customTimer = 0.0f;
 
+	Cappuccino::LUT lut = Cappuccino::LUT("Warm.CUBE");
+	Cappuccino::LUT lut1 = Cappuccino::LUT("Cool.CUBE");
+	Cappuccino::LUT lut2 = Cappuccino::LUT("Custom.CUBE");
 };

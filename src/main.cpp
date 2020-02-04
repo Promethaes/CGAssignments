@@ -8,7 +8,7 @@ using Mesh        = Cappuccino::Mesh;
 using Shader      = Cappuccino::Shader;
 using SoundSystem = Cappuccino::SoundSystem;
 using Texture     = Cappuccino::Texture;
-
+//using LUT		  = Cappuccino::LUT;
 
 #pragma region PROGRAM SETTINGS
 
@@ -45,6 +45,7 @@ int main() {
 		Shader::setDefaultPath("./Assets/Shaders/");
 		SoundSystem::setDefaultPath("./Assets/Sounds/");
 		Texture::setDefaultPath("./Assets/Textures/");
+		//LUT::setDefaultPath("./Assets/LUTs/");
 
 
 		//Cappuccino::Framebuffer test(glm::vec2(1600.0f, 1000.0f), 2,

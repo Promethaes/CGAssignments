@@ -1,4 +1,5 @@
 #include "MainScene.h"
+#include "LUTLoader.h"
 
 MainScene::MainScene(bool yn)
 	:Cappuccino::Scene(yn), _in(true, std::nullopt)
@@ -47,7 +48,7 @@ void MainScene::childUpdate(float dt)
 bool MainScene::init()
 {
 	if (_lights.empty())
-		_lights.push_back(PointLight(glm::vec3(-1.0f, 2.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3(1.0f, 1.0f, 1.0f), 64.0f));
+		_lights.push_back(PointLight(glm::vec3(-1.0f, 2.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f),10.f*glm::vec3(1.0f, 0.0f, 0.0f), 10.f*glm::vec3(1.0f, 0.0f, 1.0f), 64.0f));
 	_lamps.clear();
 	
 	//make the shader
@@ -60,6 +61,12 @@ bool MainScene::init()
 		_mainShader->setUniform("material.normalMap", 2);
 		_mainShader->setUniform("material.emissionMap", 3);
 		_mainShader->setUniform("material.heightMap", 4);
+
+		Cappuccino::LUT lut("Warm.CUBE");
+		lut.loadLUT();
+		glEnable(GL_TEXTURE_3D);
+		glActiveTexture(GL_TEXTURE1);
+		glBindTexture(GL_TEXTURE_3D, lut._textureID);
 	}
 
 	for (unsigned i = 0; i < _lights.size(); i++) {

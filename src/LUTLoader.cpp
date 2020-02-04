@@ -23,7 +23,7 @@ namespace Cappuccino {
 		char inputString[128];
 
 		std::string titleData;
-		unsigned int sizeData;
+		int sizeData;
 		glm::vec3 domainMinData;
 		glm::vec3 domainMaxData;
 		std::vector<glm::vec3> lookupData;

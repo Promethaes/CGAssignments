@@ -31,6 +31,16 @@ in vec3 tViewDir;
 in mat3 TBN;
 in mat4 outView;
 
+uniform int ourambient;
+uniform int ourspecular;
+uniform int ourdiffuse;
+uniform int ourrim;
+uniform int ourdiffuseRampShading;
+uniform int ourspecularRampShading;
+uniform int ourwarm;
+uniform int ourcool;
+uniform int ourcustom;
+
 vec3 calculatePointLight(PointLight light, vec3 normal, vec3 fragPos, vec3 vD);  
 
 vec4 calculateRimLight(PointLight light,vec3 fragPos,vec3 norm);
@@ -46,9 +56,8 @@ void main()
 	vec3 light = vec3(0.0);
 	    for(int i = 0 ; i < numLights;i++){
 	        light += calculatePointLight(pointLight[i],norm,fragPos,fViewDir);
-            light += vec3(calculateRimLight(pointLight[i],fragPos,norm)).xyz;
+            light += vec3(calculateRimLight(pointLight[i],fragPos,norm)).xyz * ourrim;
         }
-	    
 
 	vec3 emission = texture(material.emissionMap,texCoords).rgb;
 	light += emission;
@@ -76,7 +85,12 @@ vec3 calculatePointLight(PointLight light, vec3 normal, vec3 fragPos,vec3 vD) {
 
     // diffuse shading
     float diff = max(dot(normal, lightDir), 0.0f);
-    
+
+    //TODO
+    //texture1D yeet;
+    //texture1D temp =(yeet,newDiff);
+
+
     // specular shading
     vec3 reflectDir = reflect(-lightDir, normal);
     float spec = pow(max(dot(vD, reflectDir), 0.0f), material.shininess);
@@ -94,5 +108,5 @@ vec3 calculatePointLight(PointLight light, vec3 normal, vec3 fragPos,vec3 vD) {
     diffuse*=attenuation;
     specular*=attenuation;
 
-    return (ambient + diffuse + specular);
+    return ((ambient*ourambient) + (diffuse*ourdiffuse) + (specular*ourspecular));
 }

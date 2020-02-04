@@ -55,19 +55,20 @@ private:
 	/*
 	Booleans
 	*/
-	bool _ambient = true;
-	bool _specular = true;
-	bool _diffuse = true;
-	bool _rim = true;
-	bool _diffuseRampShading = true;
+	int _ambient = false;
+	int _specular = false;
+	float _diffuseMyTimer = 0.0f;
+	int _diffuse = false;
+	int _rim = false;
+	int _diffuseRampShading = false;
 	float _diffuseTimer = 0.0f;
-	bool _specularRampShading = true;
+	int _specularRampShading = false;
 	float _specularTimer = 0.0f;
-	bool _warm = true;
+	int _warm = false;
 	float _warmTimer = 0.0f;
-	bool _cool = true;
+	int _cool = false;
 	float _coolTimer = 0.0f;
-	bool _custom = true;
+	int _custom = false;
 	float _customTimer = 0.0f;
 
 };

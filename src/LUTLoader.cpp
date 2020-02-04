@@ -23,9 +23,9 @@ namespace Cappuccino {
 		char inputString[128];
 
 		std::string titleData;
-		int sizeData;
-		glm::vec3 domainMinData;
-		glm::vec3 domainMaxData;
+		std::vector<int> sizeData;
+		std::vector<glm::vec3> domainMinData;
+		std::vector<glm::vec3> domainMaxData;
 		std::vector<glm::vec3> lookupData;
 		//loading file
 		std::ifstream input{};
@@ -41,20 +41,28 @@ namespace Cappuccino {
 
 			//LUT title
 			if (inputString[0] == 'T') {
-				std::sscanf(inputString, "TITLE \"%s\"", titleData);
+				std::string tempTitle;
+				std::sscanf(inputString, "TITLE \"%s\"", tempTitle);
+				titleData = tempTitle;
 			}
-			else if (inputString[0] == 'L') {
-				std::sscanf(inputString, "LUT_3D_SIZE %i", sizeData);
+			else if (inputString[4] == '3' && inputString[5] == 'D') {
+				int tempSize = 0;
+				std::sscanf(inputString, "LUT_3D_SIZE %i", &tempSize);
+				sizeData.push_back(tempSize);
 			}
 			else if (inputString[7] == 'M' && inputString[8] == 'I' && inputString[9] == 'N') {
-				std::sscanf(inputString, "DOMAIN_MIN %f %f %f", domainMinData.x, domainMinData.y, domainMinData.z);
+				glm::vec3 minTemp;
+				std::sscanf(inputString, "DOMAIN_MIN %f %f %f", &minTemp.x, &minTemp.y, &minTemp.z);
+				domainMinData.push_back(minTemp);
 			}
 			else if (inputString[7] == 'M' && inputString[8] == 'A' && inputString[9] == 'X') {
-				std::sscanf(inputString, "DOMAIN_MAX %f %f %f", domainMaxData.x, domainMaxData.y, domainMaxData.z);
+				glm::vec3 maxTemp;
+				std::sscanf(inputString, "DOMAIN_MAX %f %f %f", &maxTemp.x, &maxTemp.y, &maxTemp.z);
+				domainMaxData.push_back(maxTemp);
 			}
 			else if (inputString[0] == '0' || inputString[0] == '1') {
-				glm::vec3 lutData{ 0 };
-				std::sscanf(inputString, "%f %f %f", lutData.x, lutData.y, lutData.z);
+				glm::vec3 lutData(0);
+				std::sscanf(inputString, "%f %f %f", &lutData.x, &lutData.y, &lutData.z);
 				lookupData.push_back(lutData);
 			}
 			else
@@ -62,9 +70,9 @@ namespace Cappuccino {
 		}
 
 		_lutName = titleData;
-		_lutSize = sizeData;
-		_domainMin.push_back( domainMinData);
-		_domainMax.push_back( domainMaxData);
+		_lutSize = sizeData[0];
+		_domainMin.push_back(domainMinData[0]);
+		_domainMax.push_back(domainMaxData[0]);
 
 		for (unsigned int i = 0; i < lookupData.size(); i++)
 			_rgbValues.push_back(lookupData[i]);
@@ -84,7 +92,7 @@ namespace Cappuccino {
 		glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 		glTexParameteri(GL_TEXTURE_3D, GL_TEXTURE_WRAP_R, GL_REPEAT);
 
-		glTexImage3D(GL_TEXTURE_3D, 0, GL_RGB,_lutSize, _lutSize, _lutSize, 0, GL_RGB, GL_FLOAT, _rgbValues.data());
+		glTexImage3D(GL_TEXTURE_3D, 0, GL_RGB, _lutSize, _lutSize, _lutSize, 0, GL_RGB, GL_FLOAT, _rgbValues.data());
 		glBindTexture(GL_TEXTURE_3D, 0);
 		glDisable(GL_TEXTURE_3D);
 

@@ -151,7 +151,7 @@ bool MainScene::init()
 		_mainShader->setUniform("material.emissionMap", 3);
 		_mainShader->setUniform("material.heightMap", 4);
 
-		Cappuccino::LUT lut("Warm.CUBE");
+		Cappuccino::LUT lut("Cool.CUBE");
 		lut.loadLUT();
 		glEnable(GL_TEXTURE_3D);
 		glActiveTexture(GL_TEXTURE1);

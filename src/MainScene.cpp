@@ -1,5 +1,6 @@
 #include "MainScene.h"
 #include "LUTLoader.h"
+#include <iostream>
 
 MainScene::MainScene(bool yn)
 	:Cappuccino::Scene(yn), _in(true, std::nullopt)
@@ -60,8 +61,10 @@ void MainScene::childUpdate(float dt)
 	}
 		
 	if (_in.keyboard->keyPressed(Cappuccino::KeyEvent::SIX)) {
-		if(!_diffuseTimer)
+		if (!_diffuseTimer) {
 			_diffuseRampShading ^= 1;
+			_diffuseTimer += dt;
+		}
 	}
 
 	if (_specularTimer) {
@@ -71,8 +74,10 @@ void MainScene::childUpdate(float dt)
 	}
 
 	if (_in.keyboard->keyPressed(Cappuccino::KeyEvent::SEVEN)) {
-		if(!_specularTimer)
+		if (!_specularTimer) {
 			_specularRampShading ^= 1;
+			_specularTimer += dt;
+		}
 	}
 	if (_warmTimer) {
 		_warmTimer += dt;
@@ -80,8 +85,10 @@ void MainScene::childUpdate(float dt)
 			_warmTimer = 0.0f;
 	}
 	if (_in.keyboard->keyPressed(Cappuccino::KeyEvent::EIGHT)) {
-		if(!_warmTimer)
+		if (!_warmTimer) {
 			_warm ^= 1;
+			_warmTimer += dt;
+		}	
 	}
 
 	if (_coolTimer) {
@@ -91,11 +98,24 @@ void MainScene::childUpdate(float dt)
 	}
 
 	if (_in.keyboard->keyPressed(Cappuccino::KeyEvent::NINE)) {
-		if(!_coolTimer)
+		if (!_coolTimer) {
 			_cool ^= 1;
+			_coolTimer += dt;
+		}
 	}
 
+	if (_diffuseMyTimer) {
+		_diffuseMyTimer += dt;
+		if (_diffuseMyTimer >= 1.0f)
+			_diffuseMyTimer = 0.0f;
+	}
 
+	if (_in.keyboard->keyPressed(Cappuccino::KeyEvent::Q)) {
+		if (!_diffuseMyTimer) {
+			_diffuse ^= 1;
+			_diffuseMyTimer += dt;
+		}
+	}
 
 
 
@@ -119,7 +139,15 @@ void MainScene::childUpdate(float dt)
 	//load view matrix
 	_mainShader->use();
 	_mainShader->loadViewMatrix(_c);
-
+	_mainShader->setUniform("ourambient", _ambient);
+	_mainShader->setUniform("ourspecular",_specular );
+	_mainShader->setUniform("ourdiffuse", _diffuse);
+	_mainShader->setUniform("ourrim", _rim);
+	_mainShader->setUniform("ourdiffuseRampShading",_diffuseRampShading );
+	_mainShader->setUniform("ourspecularRampShading", _specularRampShading);
+	_mainShader->setUniform("ourwarm", _warm);
+	_mainShader->setUniform("ourcool", _cool);
+	_mainShader->setUniform("ourcustom",_custom );
 
 	static float elapsedTime = 0.0f;
 	elapsedTime += dt;

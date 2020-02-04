@@ -10,6 +10,95 @@ MainScene::MainScene(bool yn)
 
 void MainScene::childUpdate(float dt)
 {
+	/*
+	Toggle Keys
+	*/
+
+	if (_customTimer) {
+		_customTimer += dt;
+		if (_customTimer >= 1.0f)
+			_customTimer = 0.0f;
+	}
+	if (_in.keyboard->keyPressed(Cappuccino::KeyEvent::ZERO)) {
+		if(!_customTimer)
+			_custom ^= 1;
+	}
+	if (_in.keyboard->keyPressed(Cappuccino::KeyEvent::ONE)) {
+		_diffuse = false;
+		_ambient = false;
+		_specular = false;
+		_rim = false;
+	}
+	if (_in.keyboard->keyPressed(Cappuccino::KeyEvent::TWO)) {
+		_diffuse = false;
+		_ambient = true;
+		_specular = false;
+		_rim = false;
+	}
+	if (_in.keyboard->keyPressed(Cappuccino::KeyEvent::THREE)) {
+		_diffuse = false;
+		_ambient = false;
+		_specular = true;
+		_rim = false;
+	}
+	if (_in.keyboard->keyPressed(Cappuccino::KeyEvent::FOUR)) {
+		_diffuse = false;
+		_ambient = false;
+		_specular = true;
+		_rim = true;
+	}
+	if (_in.keyboard->keyPressed(Cappuccino::KeyEvent::FIVE)) {
+		_diffuse = false;
+		_ambient = true;
+		_specular = true;
+		_rim = true;
+	}
+	if (_diffuseTimer){
+		_diffuseTimer += dt;
+		if (_diffuseTimer >= 1.0f)
+			_diffuseTimer = 0.0f;
+	}
+		
+	if (_in.keyboard->keyPressed(Cappuccino::KeyEvent::SIX)) {
+		if(!_diffuseTimer)
+			_diffuseRampShading ^= 1;
+	}
+
+	if (_specularTimer) {
+		_specularTimer += dt;
+		if (_specularTimer >= 1.0f)
+			_specularTimer = 0.0f;
+	}
+
+	if (_in.keyboard->keyPressed(Cappuccino::KeyEvent::SEVEN)) {
+		if(!_specularTimer)
+			_specularRampShading ^= 1;
+	}
+	if (_warmTimer) {
+		_warmTimer += dt;
+		if (_warmTimer >= 1.0f)
+			_warmTimer = 0.0f;
+	}
+	if (_in.keyboard->keyPressed(Cappuccino::KeyEvent::EIGHT)) {
+		if(!_warmTimer)
+			_warm ^= 1;
+	}
+
+	if (_coolTimer) {
+		_coolTimer += dt;
+		if (_coolTimer >= 1.0f)
+			_coolTimer = 0.0f;
+	}
+
+	if (_in.keyboard->keyPressed(Cappuccino::KeyEvent::NINE)) {
+		if(!_coolTimer)
+			_cool ^= 1;
+	}
+
+
+
+
+
 	//calculate camera movement
 	auto moveForce = glm::vec3(0.0f, 0.0f, 0.0f);
 	if (_in.keyboard->keyPressed(Cappuccino::KeyEvent::W))
@@ -48,7 +137,7 @@ void MainScene::childUpdate(float dt)
 bool MainScene::init()
 {
 	if (_lights.empty())
-		_lights.push_back(PointLight(glm::vec3(-1.0f, 2.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f),10.f*glm::vec3(1.0f, 0.0f, 0.0f), 10.f*glm::vec3(1.0f, 0.0f, 1.0f), 64.0f));
+		_lights.push_back(PointLight(glm::vec3(-1.0f, 2.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f),10.f*glm::vec3(1.0f, 1.0f, 1.0f), 10.f*glm::vec3(1.0f, 1.0f, 1.0f), 64.0f));
 	_lamps.clear();
 	
 	//make the shader
@@ -62,7 +151,7 @@ bool MainScene::init()
 		_mainShader->setUniform("material.emissionMap", 3);
 		_mainShader->setUniform("material.heightMap", 4);
 
-		Cappuccino::LUT lut("Cool.CUBE");
+		Cappuccino::LUT lut("Custom.CUBE");
 		lut.loadLUT();
 		glEnable(GL_TEXTURE_3D);
 		glActiveTexture(GL_TEXTURE1);

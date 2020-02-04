@@ -49,4 +49,25 @@ private:
 	Empty* _ghoul = nullptr;
 	Empty* _gun = nullptr;
 	std::vector<Empty*> _lamps;
+
+
+
+	/*
+	Booleans
+	*/
+	bool _ambient = true;
+	bool _specular = true;
+	bool _diffuse = true;
+	bool _rim = true;
+	bool _diffuseRampShading = true;
+	float _diffuseTimer = 0.0f;
+	bool _specularRampShading = true;
+	float _specularTimer = 0.0f;
+	bool _warm = true;
+	float _warmTimer = 0.0f;
+	bool _cool = true;
+	float _coolTimer = 0.0f;
+	bool _custom = true;
+	float _customTimer = 0.0f;
+
 };

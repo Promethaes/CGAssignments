@@ -66,7 +66,7 @@ int main() {
 			float LUToffset = 1.0f / (2.0f * LUTsize);
 			
 			vec4 fColour = texture(LUT,LUTscale* col + LUToffset);
-
+			fColour.rgb += col;
 
 		    FragColor = fColour;
 

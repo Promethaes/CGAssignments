@@ -199,6 +199,7 @@ bool MainScene::init()
 		glEnable(GL_TEXTURE_3D);
 		glActiveTexture(GL_TEXTURE1);
 		glBindTexture(GL_TEXTURE_3D, lut._textureID);
+		//glDisable(GL_TEXTURE_3D);
 	}
 
 	for (unsigned i = 0; i < _lights.size(); i++) {

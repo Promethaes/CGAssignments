@@ -1,5 +1,6 @@
 #include "MainScene.h"
 #include "LUTLoader.h"
+#include "Cappuccino/FrameBuffer.h"
 #include <iostream>
 
 MainScene::MainScene(bool yn)
@@ -165,7 +166,7 @@ void MainScene::childUpdate(float dt)
 bool MainScene::init()
 {
 	if (_lights.empty())
-		_lights.push_back(PointLight(glm::vec3(-1.0f, 2.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f),10.f*glm::vec3(1.0f, 1.0f, 1.0f), 10.f*glm::vec3(1.0f, 1.0f, 1.0f), 64.0f));
+		_lights.push_back(PointLight(glm::vec3(-1.0f, 2.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f)/2.f,glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3(1.0f, 1.0f, 1.0f), 64.0f));
 	_lamps.clear();
 	
 	//make the shader
@@ -179,8 +180,9 @@ bool MainScene::init()
 		_mainShader->setUniform("material.emissionMap", 3);
 		_mainShader->setUniform("material.heightMap", 4);
 
-		Cappuccino::LUT lut("Cool.CUBE");
+		Cappuccino::LUT lut("Warm.CUBE");
 		lut.loadLUT();
+		Cappuccino::Framebuffer::_framebuffers[0]->_fbShader->use();
 		glEnable(GL_TEXTURE_3D);
 		glActiveTexture(GL_TEXTURE1);
 		glBindTexture(GL_TEXTURE_3D, lut._textureID);
@@ -200,10 +202,12 @@ bool MainScene::init()
 	//initialize the ghoul and the bullet
 	if (_ghoul == nullptr) {
 		_ghoul = new Empty(*_mainShader, { new Cappuccino::Texture("CrawlerDiffuse.png",Cappuccino::TextureType::DiffuseMap),
+			new Cappuccino::Texture("CrawlerDiffuse.png",Cappuccino::TextureType::SpecularMap),
 			new Cappuccino::Texture("CrawlerNorm.png",Cappuccino::TextureType::NormalMap) }, { new Cappuccino::Mesh("FromPrimordial/Crawler.obj") });
 	}
 	if (_gun == nullptr) {
 		_gun = new Empty(*_mainShader, { new Cappuccino::Texture("autoRifleDiffuse.png",Cappuccino::TextureType::DiffuseMap),
+			new Cappuccino::Texture("CrawlerDiffuse.png",Cappuccino::TextureType::SpecularMap),
 			new Cappuccino::Texture("autoRifleNormal.png",Cappuccino::TextureType::NormalMap),new Cappuccino::Texture("autoRifleEmission.png",Cappuccino::TextureType::EmissionMap)
 			}, { new Cappuccino::Mesh("FromPrimordial/autoRifle.obj") });
 		_gun->_rigidBody._position += glm::vec3(1.0f, 1.0f, 1.0f);

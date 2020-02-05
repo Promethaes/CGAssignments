@@ -67,6 +67,9 @@ int main() {
 		const float offset = 1.0 / 500.0; 
 
 		//kernel code is from learnopengl, as for bloom we used a combination of our own findings and learnopengl's tutorial
+		//https://learnopengl.com/Advanced-OpenGL/Framebuffers
+		//https://learnopengl.com/Advanced-Lighting/Bloom
+		//https://learnopengl.com/Advanced-Lighting/HDR
 		void main()
 		{
 		    vec3 col = vec3(texture(screenTexture, TexCoords.st));

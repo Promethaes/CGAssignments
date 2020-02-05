@@ -1,5 +1,5 @@
 #include "MainScene.h"
-#include "LUTLoader.h"
+
 #include "Cappuccino/FrameBuffer.h"
 #include <iostream>
 
@@ -24,6 +24,9 @@ void MainScene::childUpdate(float dt)
 	if (_in.keyboard->keyPressed(Cappuccino::KeyEvent::ZERO)) {
 		if(!_customTimer)
 			_custom ^= 1;
+		glEnable(GL_TEXTURE_3D);
+		glActiveTexture(GL_TEXTURE1);
+		glBindTexture(GL_TEXTURE_3D, lut2._textureID);
 	}
 	if (_in.keyboard->keyPressed(Cappuccino::KeyEvent::ONE)) {
 		_diffuse = false;
@@ -50,7 +53,7 @@ void MainScene::childUpdate(float dt)
 		_rim = true;
 	}
 	if (_in.keyboard->keyPressed(Cappuccino::KeyEvent::FIVE)) {
-		_diffuse = false;
+		_diffuse = true;
 		_ambient = true;
 		_specular = true;
 		_rim = true;
@@ -89,6 +92,9 @@ void MainScene::childUpdate(float dt)
 		if (!_warmTimer) {
 			_warm ^= 1;
 			_warmTimer += dt;
+			glEnable(GL_TEXTURE_3D);
+			glActiveTexture(GL_TEXTURE1);
+			glBindTexture(GL_TEXTURE_3D, lut._textureID);
 		}	
 	}
 
@@ -102,6 +108,9 @@ void MainScene::childUpdate(float dt)
 		if (!_coolTimer) {
 			_cool ^= 1;
 			_coolTimer += dt;
+			glEnable(GL_TEXTURE_3D);
+			glActiveTexture(GL_TEXTURE1);
+			glBindTexture(GL_TEXTURE_3D, lut1._textureID);
 		}
 	}
 
@@ -180,12 +189,19 @@ bool MainScene::init()
 		_mainShader->setUniform("material.emissionMap", 3);
 		_mainShader->setUniform("material.heightMap", 4);
 
-		Cappuccino::LUT lut("Warm.CUBE");
+		
 		lut.loadLUT();
+		
+		lut1.loadLUT();
+		
+		lut2.loadLUT();
+
+		lut3.loadLUT();
 		Cappuccino::Framebuffer::_framebuffers[0]->_fbShader->use();
 		glEnable(GL_TEXTURE_3D);
 		glActiveTexture(GL_TEXTURE1);
-		glBindTexture(GL_TEXTURE_3D, lut._textureID);
+		glBindTexture(GL_TEXTURE_3D, lut3._textureID);
+		//glDisable(GL_TEXTURE_3D);
 	}
 
 	for (unsigned i = 0; i < _lights.size(); i++) {

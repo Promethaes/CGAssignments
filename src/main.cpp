@@ -53,7 +53,14 @@ int main() {
 		in vec2 TexCoords;
 		
 		uniform sampler2D screenTexture;
-		uniform sampler3D LUT;
+		uniform sampler3D LUT1;
+		uniform sampler3D LUT2;
+		uniform sampler3D LUT3;
+		uniform sampler3D LUT4;
+
+		uniform int use1;
+		uniform int use2;
+		uniform int use3;
 
 		uniform int LUTsize;
 		void main()
@@ -61,8 +68,13 @@ int main() {
 		    vec3 col = vec3(texture(screenTexture, TexCoords.st));
 			//this is HDR
 			col = vec3(1.0) - exp(-col*1.0f);//1 is exposure
-			vec4 fColour = texture(LUT,col);
-			
+			vec4 Lcol1 = texture(LUT1,col)*use1;
+			vec4 Lcol2 = texture(LUT2,col)*use2;
+			vec4 Lcol3 = texture(LUT3,col)*use3;
+			vec4 fColour = Lcol1 + Lcol2 + Lcol3;	
+			if(fColour == vec4(0.0f,0.0f,0.0f,0.0f))
+				fColour = texture(LUT4,col);
+
 		    FragColor = fColour;
 
 		})";

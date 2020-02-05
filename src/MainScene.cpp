@@ -22,11 +22,13 @@ void MainScene::childUpdate(float dt)
 			_customTimer = 0.0f;
 	}
 	if (_in.keyboard->keyPressed(Cappuccino::KeyEvent::ZERO)) {
-		if(!_customTimer)
+		if (!_customTimer) {
 			_custom ^= 1;
-		glEnable(GL_TEXTURE_3D);
-		glActiveTexture(GL_TEXTURE1);
-		glBindTexture(GL_TEXTURE_3D, lut2._textureID);
+			_customTimer += dt;
+			Cappuccino::Framebuffer::_framebuffers[0]->_fbShader->use();
+			Cappuccino::Framebuffer::_framebuffers[0]->_fbShader->setUniform("use3",_custom);
+
+		}
 	}
 	if (_in.keyboard->keyPressed(Cappuccino::KeyEvent::ONE)) {
 		_diffuse = false;
@@ -92,9 +94,8 @@ void MainScene::childUpdate(float dt)
 		if (!_warmTimer) {
 			_warm ^= 1;
 			_warmTimer += dt;
-			glEnable(GL_TEXTURE_3D);
-			glActiveTexture(GL_TEXTURE1);
-			glBindTexture(GL_TEXTURE_3D, lut._textureID);
+			Cappuccino::Framebuffer::_framebuffers[0]->_fbShader->use();
+			Cappuccino::Framebuffer::_framebuffers[0]->_fbShader->setUniform("use1", _warm);
 		}	
 	}
 
@@ -108,9 +109,8 @@ void MainScene::childUpdate(float dt)
 		if (!_coolTimer) {
 			_cool ^= 1;
 			_coolTimer += dt;
-			glEnable(GL_TEXTURE_3D);
-			glActiveTexture(GL_TEXTURE1);
-			glBindTexture(GL_TEXTURE_3D, lut1._textureID);
+			Cappuccino::Framebuffer::_framebuffers[0]->_fbShader->use();
+			Cappuccino::Framebuffer::_framebuffers[0]->_fbShader->setUniform("use2", _cool);
 		}
 	}
 
@@ -198,8 +198,21 @@ bool MainScene::init()
 
 		lut3.loadLUT();
 		Cappuccino::Framebuffer::_framebuffers[0]->_fbShader->use();
+		Cappuccino::Framebuffer::_framebuffers[0]->_fbShader->setUniform("LUT1",5);
+		Cappuccino::Framebuffer::_framebuffers[0]->_fbShader->setUniform("LUT2",6);
+		Cappuccino::Framebuffer::_framebuffers[0]->_fbShader->setUniform("LUT3",7);
+		Cappuccino::Framebuffer::_framebuffers[0]->_fbShader->setUniform("LUT4",8);
 		glEnable(GL_TEXTURE_3D);
-		glActiveTexture(GL_TEXTURE1);
+		glActiveTexture(GL_TEXTURE5);
+		glBindTexture(GL_TEXTURE_3D, lut._textureID);
+		glEnable(GL_TEXTURE_3D);
+		glActiveTexture(GL_TEXTURE6);
+		glBindTexture(GL_TEXTURE_3D, lut1._textureID);
+		glEnable(GL_TEXTURE_3D);
+		glActiveTexture(GL_TEXTURE7);
+		glBindTexture(GL_TEXTURE_3D, lut2._textureID);
+		glEnable(GL_TEXTURE_3D);
+		glActiveTexture(GL_TEXTURE8);
 		glBindTexture(GL_TEXTURE_3D, lut3._textureID);
 		//glDisable(GL_TEXTURE_3D);
 	}

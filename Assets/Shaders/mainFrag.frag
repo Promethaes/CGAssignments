@@ -1,5 +1,6 @@
 #version 420 core
-out vec4 outColour;
+layout (location = 0) out vec4 outColour;
+layout (location = 1) out vec4 outBright;
 
  struct Material {
     sampler2D diffuse;
@@ -63,6 +64,12 @@ void main()
 	light += emission;
 
 	outColour = vec4(light, 1.0);
+
+    float brightness = dot(outColour.rgb, vec3(0.2126, 0.7152, 0.0722));
+    if(brightness > 0.5f)//bloom threshold
+        outBright = vec4(outColour.rgb, 1.0);
+    else
+        outBright = vec4(0.0, 0.0, 0.0, 1.0);
 
 }
 

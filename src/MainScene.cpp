@@ -127,7 +127,20 @@ void MainScene::childUpdate(float dt)
 		}
 	}
 
+	if (_bloomTimer) {
+		_bloomTimer += dt;
+		if (_bloomTimer >= 1.0f)
+			_bloomTimer = 0.0f;
+	}
 
+	if (_in.keyboard->keyPressed(Cappuccino::KeyEvent::B)) {
+		if (!_bloomTimer) {
+			_bloom ^= 1;
+			_bloomTimer += dt;
+			Cappuccino::Framebuffer::_framebuffers[0]->_fbShader->use();
+			Cappuccino::Framebuffer::_framebuffers[0]->_fbShader->setUniform("useBloom", _bloom);
+		}
+	}
 
 	//calculate camera movement
 	auto moveForce = glm::vec3(0.0f, 0.0f, 0.0f);
@@ -198,6 +211,8 @@ bool MainScene::init()
 
 		lut3.loadLUT();
 		Cappuccino::Framebuffer::_framebuffers[0]->_fbShader->use();
+		Cappuccino::Framebuffer::_framebuffers[0]->_fbShader->setUniform("screenTexture",0);
+		Cappuccino::Framebuffer::_framebuffers[0]->_fbShader->setUniform("bloom",1);
 		Cappuccino::Framebuffer::_framebuffers[0]->_fbShader->setUniform("LUT1",5);
 		Cappuccino::Framebuffer::_framebuffers[0]->_fbShader->setUniform("LUT2",6);
 		Cappuccino::Framebuffer::_framebuffers[0]->_fbShader->setUniform("LUT3",7);

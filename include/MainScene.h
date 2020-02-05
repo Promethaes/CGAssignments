@@ -71,6 +71,8 @@ private:
 	float _coolTimer = 0.0f;
 	int _custom = false;
 	float _customTimer = 0.0f;
+	int _bloom = false;
+	float _bloomTimer = 0.0f;
 
 	Cappuccino::LUT lut = Cappuccino::LUT("Warm.CUBE");
 	Cappuccino::LUT lut1 = Cappuccino::LUT("Cool.CUBE");

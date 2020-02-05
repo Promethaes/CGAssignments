@@ -53,7 +53,7 @@ void MainScene::childUpdate(float dt)
 		_rim = true;
 	}
 	if (_in.keyboard->keyPressed(Cappuccino::KeyEvent::FIVE)) {
-		_diffuse = false;
+		_diffuse = true;
 		_ambient = true;
 		_specular = true;
 		_rim = true;
@@ -195,10 +195,12 @@ bool MainScene::init()
 		lut1.loadLUT();
 		
 		lut2.loadLUT();
+
+		lut3.loadLUT();
 		Cappuccino::Framebuffer::_framebuffers[0]->_fbShader->use();
 		glEnable(GL_TEXTURE_3D);
 		glActiveTexture(GL_TEXTURE1);
-		glBindTexture(GL_TEXTURE_3D, lut._textureID);
+		glBindTexture(GL_TEXTURE_3D, lut3._textureID);
 		//glDisable(GL_TEXTURE_3D);
 	}
 

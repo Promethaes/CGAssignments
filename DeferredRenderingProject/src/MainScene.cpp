@@ -123,10 +123,11 @@ void MainScene::childUpdate(float dt)
 
 	{
 		static bool done = false;
-		if (_in.keyboard->keyPressed(Cappuccino::KeyEvent::L) && !done) {
+		if (_in.keyboard->keyPressed(Cappuccino::KeyEvent::L) && !done && _lights.size() < 25) {
 			done = true;
 			using namespace Cappuccino;
-			_lights.push_back(new PointLightBody(_mainShader, glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(randomFloat(0.0f, 1.0f), randomFloat(0.0f, 1.0f), randomFloat(0.0f, 1.0f))));
+			_lights.push_back(new PointLightBody(_mainShader, glm::vec3(randomFloat(0.0f, 5.0f), randomFloat(0.0f, 5.0f), randomFloat(0.0f, 5.0f)),
+				glm::vec3(randomFloat(0.0f, 1.0f), randomFloat(0.0f, 1.0f), randomFloat(0.0f, 1.0f))));
 		}
 		else if (_in.keyboard->keyReleased(Cappuccino::KeyEvent::L))
 			done = false;
@@ -249,6 +250,8 @@ PointLightBody::PointLightBody(Cappuccino::Shader* shader, const glm::vec3& posi
 		{ LOAD_TEXTURE("Bot Albedo", "Bot/Bot-Diffuse.png", Cappuccino::TextureType::PBRAlbedo) },
 		{ Cappuccino::MeshLibrary::loadMesh("Sphere","Sphere.obj") });
 	_e->setActive(true);
+	_e->_rigidBody._position = position;
+	_e->_transform.scale(glm::vec3(1.0f, 1.0f, 1.0f), 0.5f);
 }
 
 PointLightBody::~PointLightBody()

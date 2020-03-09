@@ -126,7 +126,7 @@ void MainScene::childUpdate(float dt)
 		if (_in.keyboard->keyPressed(Cappuccino::KeyEvent::L) && !done && _lights.size() < 25) {
 			done = true;
 			using namespace Cappuccino;
-			_lights.push_back(new PointLightBody(_mainShader, glm::vec3(randomFloat(0.0f, 5.0f), randomFloat(0.0f, 5.0f), randomFloat(0.0f, 5.0f)),
+			_lights.push_back(new PointLightBody(_mainShader, glm::vec3(randomFloat(-5.0f, 5.0f), randomFloat(-5.0f, 5.0f), randomFloat(-5.0f, 5.0f)),
 				glm::vec3(randomFloat(0.0f, 1.0f), randomFloat(0.0f, 1.0f), randomFloat(0.0f, 1.0f))));
 		}
 		else if (_in.keyboard->keyReleased(Cappuccino::KeyEvent::L))
@@ -184,10 +184,16 @@ void MainScene::sendLights()
 		_mainShader->setUniform("gBuffer.gMetalRoughnessAO", 3);
 		_mainShader->setUniform("gBuffer.gEmissive", 4);
 	}
-	_mainShader->setUniform("numLights", (int)_lights.size());
+	unsigned inUseLightNum = 0;
 	for (unsigned i = 0; i < _lights.size(); i++) {
+		if (_lights[i]->_p._isActive)
+			continue;
 		_mainShader->setUniform("lights[" + std::to_string(i) + "].position", _lights[i]->getPosition());
 		_mainShader->setUniform("lights[" + std::to_string(i) + "].colour", _lights[i]->_p._col);
+
+		inUseLightNum++;
+		_mainShader->setUniform("numLights", (int)inUseLightNum);
+
 		//_mainShader->setUniform("lights[" + std::to_string(i) + "].active", _lights[i]._isActive);
 
 	}
@@ -261,7 +267,7 @@ PointLightBody::~PointLightBody()
 
 void PointLightBody::update(float dt)
 {
-	_e->_transform.rotate(glm::vec3(0.0f, 1.0f, 0.0f), 90.0f * dt);
+	_e->_transform.rotate(glm::vec3(0.0f, 1.0f, 1.0f), 90.0f * dt);
 }
 
 void PointLightBody::setPosition(const glm::vec3& pos)

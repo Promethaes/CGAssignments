@@ -95,9 +95,7 @@ void MainScene::childUpdate(float dt)
 		}
 		oneLightTimer += dt;
 		accumulation = true;
-		colourMaterial = true;
-		normal = true;
-		positionDepth = true;
+		
 	}
 
 	if (oneLightTimer) {

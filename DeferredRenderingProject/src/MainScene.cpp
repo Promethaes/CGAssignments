@@ -79,7 +79,7 @@ void MainScene::childUpdate(float dt)
 	if (_in.keyboard->keyPressed(Cappuccino::KeyEvent::ONE)&&!oneLightTimer) {
 		if (oneLight) {
 			if (_lights.size() > 1)
-				for (unsigned i = _lights.size() - 1; i > 1; i--) {
+				for (unsigned i = _lights.size() - 1; i >= 1; i--) {
 					_lights[i]->_e->setActive(false);
 					_lights[i]->_p._isActive = false;
 				}
@@ -87,7 +87,7 @@ void MainScene::childUpdate(float dt)
 		}
 		else{
 			if (_lights.size() > 1)
-				for (unsigned i = _lights.size() - 1; i > 1; i--) {
+				for (unsigned i = _lights.size() - 1; i >= 1; i--) {
 					_lights[i]->_e->setActive(true);
 					_lights[i]->_p._isActive = true;
 				}

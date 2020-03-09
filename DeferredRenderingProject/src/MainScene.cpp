@@ -309,6 +309,11 @@ void MainScene::sendLights()
 		_mainShader->setUniform("gBuffer.gMetalRoughnessAO", 3);
 		_mainShader->setUniform("gBuffer.gEmissive", 4);
 	}
+
+	_mainShader->setUniform("positionDepthT", this->positionDepth);
+	_mainShader->setUniform("normalT", this->normal);
+	_mainShader->setUniform("albedoT", this->colourMaterial);
+
 	unsigned inUseLightNum = 0;
 	for (unsigned i = 0; i < _lights.size(); i++) {
 		if (!_lights[i]->_p._isActive)

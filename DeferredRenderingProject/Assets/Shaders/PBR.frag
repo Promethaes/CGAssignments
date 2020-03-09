@@ -29,6 +29,13 @@ uniform GBuffer gBuffer;
 uniform vec3 camPos;
 in vec2 TexCoords;
 
+//toggles
+uniform int positionDepthT;
+uniform int normalT;
+uniform int albedoT;
+
+
+
 vec3 fresnelSchlick(float cosTheta,vec3 F0){
     return F0 + (1.0f - F0) * pow(1.0f - cosTheta,5.0f);
 }
@@ -114,7 +121,16 @@ void main(){
     vec3 color   = ambient + Lo;
     color = vec3(1.0) - exp(-color*1.0f);//1 is exposure
     color += 4.0f*texture(gBuffer.gEmissive,TexCoords).rgb;
-    FragColor = vec4(color,1.0f);
+
+    if(positionDepthT == 1)
+        FragColor = vec4(texture(gBuffer.gPos,TexCoords).rgb,1.0f);
+    else if(normalT == 1)
+        FragColor = vec4(texture(gBuffer.gNormal,TexCoords).rgb,1.0f);
+    else if(albedoT == 1)
+        FragColor = vec4(texture(gBuffer.gAlbedo,TexCoords).rgb,1.0f);
+    else
+        FragColor = vec4(color,1.0f);
+
 
     float brightness = dot(FragColor.rgb, vec3(0.2126, 0.7152, 0.0722));
     if(brightness > 1.0f)//bloom threshold

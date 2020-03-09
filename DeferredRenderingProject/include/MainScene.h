@@ -60,4 +60,34 @@ public:
 
 	Cappuccino::CappInput _in;
 	Cappuccino::Camera _c;
+	bool lightsVisible = true;
+	float lightsVisibleTimer = 0.0f;
+
+	bool oneLight = false;
+	float oneLightTimer = 0.0f;
+
+	bool positionDepth = true;
+	float positionDepthTimer = 0.0f;
+
+	bool normal = true;
+	float normalTimer = 0.0f;
+
+	bool colourMaterial = true;
+	float colourMaterialTimer = 0.0f;
+
+	bool accumulation = true;
+	float accumulationTimer = 0.0f;
+
+	unsigned currentLight = 0;
+	float currentLightTimer = 0.0f;
+
+	bool warm = false;
+	float warmTimer = 0.0f;
+
+	bool cool = false;
+	float coolTimer = 0.0f;
+
+	bool custom = false;
+	float customTimer = 0.0f;
+
 };

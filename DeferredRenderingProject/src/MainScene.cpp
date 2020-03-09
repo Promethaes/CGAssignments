@@ -76,7 +76,132 @@ void MainScene::childUpdate(float dt)
 		moveForce -= glm::vec3(_c.getRight().x, 0.0f, _c.getRight().z);
 	if (_in.keyboard->keyPressed(Cappuccino::KeyEvent::D))
 		moveForce += glm::vec3(_c.getRight().x, 0.0f, _c.getRight().z);
+	if (_in.keyboard->keyPressed(Cappuccino::KeyEvent::ONE)&&!oneLightTimer) {
+		if (oneLight) {
+			if (_lights.size() > 1)
+				for (unsigned i = _lights.size() - 1; i > 1; i--) {
+					_lights[i]->_e->setActive(false);
+					_lights[i]->_p._isActive = false;
+				}
+			oneLight = false;
+		}
+		else{
+			if (_lights.size() > 1)
+				for (unsigned i = _lights.size() - 1; i > 1; i--) {
+					_lights[i]->_e->setActive(true);
+					_lights[i]->_p._isActive = true;
+				}
+			oneLight = true;
+		}
+		oneLightTimer += dt;
+		accumulation = true;
+		colourMaterial = true;
+		normal = true;
+		positionDepth = true;
+	}
 
+	if (oneLightTimer) {
+		oneLightTimer += dt;
+		if (oneLightTimer > 0.5f)
+			oneLightTimer = 0.0f;
+	}
+		
+	if (_in.keyboard->keyPressed(Cappuccino::KeyEvent::TWO)&&!lightsVisibleTimer) {
+		if (lightsVisible) {
+			for (auto x : _lights)
+				x->setBodyVisible(false);
+			lightsVisible = false;
+		}
+		else
+		{
+			for (auto x : _lights)
+				x->setBodyVisible(true);
+			lightsVisible = true;
+		}
+		lightsVisibleTimer += dt;
+	}
+
+	if (lightsVisibleTimer) {
+		lightsVisibleTimer += dt;
+		if (lightsVisibleTimer > 0.5f)
+			lightsVisibleTimer = 0.0f;
+	}
+	
+	if (_in.keyboard->keyPressed(Cappuccino::KeyEvent::THREE)&&!positionDepthTimer) {
+		positionDepth = true;
+		normal = false;
+		colourMaterial = false;
+		accumulation = false;
+	}
+
+	if (positionDepthTimer) {
+		positionDepthTimer += dt;
+		if (positionDepthTimer > 0.5f)
+			positionDepthTimer = 0.0f;
+	}
+
+	if (_in.keyboard->keyPressed(Cappuccino::KeyEvent::FOUR)&&!normalTimer) {
+		positionDepth = false;
+		normal = true;
+		colourMaterial = false;
+		accumulation = false;
+	}
+
+	if (normalTimer) {
+		normalTimer += dt;
+		if (normalTimer > 0.5f)
+			normalTimer = 0.0f;
+	}
+
+	if (_in.keyboard->keyPressed(Cappuccino::KeyEvent::FIVE)&&!colourMaterialTimer) {
+		positionDepth = false;
+		normal = false;
+		colourMaterial = true;
+		accumulation = false;
+	}
+
+	if (colourMaterialTimer) {
+		colourMaterialTimer += dt;
+		if (colourMaterialTimer > 0.5f)
+			colourMaterialTimer = 0.0f;
+	}
+
+	if (_in.keyboard->keyPressed(Cappuccino::KeyEvent::SIX)&&!accumulationTimer) {
+		positionDepth = false;
+		normal = false;
+		colourMaterial = false;
+		accumulation = true;
+	}
+
+	if (accumulationTimer) {
+		accumulationTimer += dt;
+		if (accumulationTimer > 0.5f)
+			accumulationTimer = 0.0f;
+	}
+
+	if (_in.keyboard->keyPressed(Cappuccino::KeyEvent::SEVEN)&&!currentLightTimer) {
+		if (currentLight == _lights.size() - 1)
+			currentLight = 0;
+		else
+			currentLight++;
+		currentLightTimer += dt;
+	}
+
+	if (currentLightTimer) {
+		currentLightTimer += dt;
+		if (currentLightTimer > 0.5f)
+			currentLightTimer = 0.0f;
+	}
+
+	if (_in.keyboard->keyPressed(Cappuccino::KeyEvent::EIGHT)&&!warmTimer) {
+		warm ^= 1;
+	}
+	if (_in.keyboard->keyPressed(Cappuccino::KeyEvent::NINE)&&!coolTimer) {
+		cool ^= 1;
+	}
+	if (_in.keyboard->keyPressed(Cappuccino::KeyEvent::ZERO) && !customTimer) {
+		custom ^= 1;
+	}
 	float speed = 1.5f;
 	moveForce *= speed;
 
@@ -103,21 +228,21 @@ void MainScene::childUpdate(float dt)
 		if (lightMove) {
 
 			if (_in.keyboard->keyPressed(Cappuccino::KeyEvent::UP_ARROW)) {
-				_lights.front()->setPosition(_lights.front()->getPosition() - glm::vec3(0.0f, 0.0f, 5.0f) * dt);
+				_lights[currentLight]->setPosition(_lights[currentLight]->getPosition() - glm::vec3(0.0f, 0.0f, 5.0f) * dt);
 			}
 			else if (_in.keyboard->keyPressed(Cappuccino::KeyEvent::DOWN_ARROW)) {
-				_lights.front()->setPosition(_lights.front()->getPosition() + glm::vec3(0.0f, 0.0f, 5.0f) * dt);
+				_lights[currentLight]->setPosition(_lights[currentLight]->getPosition() + glm::vec3(0.0f, 0.0f, 5.0f) * dt);
 			}
 
 			if (_in.keyboard->keyPressed(Cappuccino::KeyEvent::LEFT_ARROW)) {
-				_lights.front()->setPosition(_lights.front()->getPosition() - glm::vec3(5.0f, 0.0f, 0.0f) * dt);
+				_lights[currentLight]->setPosition(_lights[currentLight]->getPosition() - glm::vec3(5.0f, 0.0f, 0.0f) * dt);
 			}
 			else if (_in.keyboard->keyPressed(Cappuccino::KeyEvent::RIGHT_ARROW)) {
-				_lights.front()->setPosition(_lights.front()->getPosition() + glm::vec3(5.0f, 0.0f, 0.0f) * dt);
+				_lights[currentLight]->setPosition(_lights[currentLight]->getPosition() + glm::vec3(5.0f, 0.0f, 0.0f) * dt);
 			}
 		}
 		else
-			_lights.front()->setPosition(_lights.front()->getPosition() + glm::vec3(0.0f, sinf(eTime) / 10.0f, 0.0f));
+			_lights[currentLight]->setPosition(_lights[currentLight]->getPosition() + glm::vec3(0.0f, sinf(eTime) / 10.0f, 0.0f));
 
 	}
 
@@ -186,6 +311,8 @@ void MainScene::sendLights()
 	}
 	_mainShader->setUniform("numLights", (int)_lights.size());
 	for (unsigned i = 0; i < _lights.size(); i++) {
+		if (!_lights[i]->_p._isActive)
+			continue;
 		_mainShader->setUniform("lights[" + std::to_string(i) + "].position", _lights[i]->getPosition());
 		_mainShader->setUniform("lights[" + std::to_string(i) + "].colour", _lights[i]->_p._col);
 		//_mainShader->setUniform("lights[" + std::to_string(i) + "].active", _lights[i]._isActive);

@@ -1,5 +1,6 @@
 #include "MainScene.h"
 #include "Cappuccino/ResourceManager.h"
+#include "Cappuccino/Random.h"
 
 #define LOAD_MESH Cappuccino::MeshLibrary::loadMesh
 #define LOAD_TEXTURE Cappuccino::TextureLibrary::loadTexture
@@ -12,9 +13,6 @@ MainScene::MainScene(bool first)
 
 bool MainScene::init()
 {
-
-
-
 	_mainShader = new Cappuccino::Shader(std::string("main"), "PBRAnimate.vert", "PBR.frag");
 	Cappuccino::Application::_lightingPassShader = _mainShader;
 	_crawler = new Empty(_mainShader, {
@@ -121,6 +119,17 @@ void MainScene::childUpdate(float dt)
 		else
 			_lights.front()->setPosition(_lights.front()->getPosition() + glm::vec3(0.0f, sinf(eTime) / 10.0f, 0.0f));
 
+	}
+
+	{
+		static bool done = false;
+		if (_in.keyboard->keyPressed(Cappuccino::KeyEvent::L) && !done) {
+			done = true;
+			using namespace Cappuccino;
+			_lights.push_back(new PointLightBody(_mainShader, glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(randomFloat(0.0f, 1.0f), randomFloat(0.0f, 1.0f), randomFloat(0.0f, 1.0f))));
+		}
+		else if (_in.keyboard->keyReleased(Cappuccino::KeyEvent::L))
+			done = false;
 	}
 
 

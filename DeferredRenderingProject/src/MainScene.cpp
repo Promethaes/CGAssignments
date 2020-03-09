@@ -186,7 +186,7 @@ void MainScene::sendLights()
 	}
 	unsigned inUseLightNum = 0;
 	for (unsigned i = 0; i < _lights.size(); i++) {
-		if (_lights[i]->_p._isActive)
+		if (!_lights[i]->_p._isActive)
 			continue;
 		_mainShader->setUniform("lights[" + std::to_string(i) + "].position", _lights[i]->getPosition());
 		_mainShader->setUniform("lights[" + std::to_string(i) + "].colour", _lights[i]->_p._col);

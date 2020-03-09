@@ -66,13 +66,13 @@ public:
 	bool oneLight = false;
 	float oneLightTimer = 0.0f;
 
-	bool positionDepth = true;
+	bool positionDepth = false;
 	float positionDepthTimer = 0.0f;
 
-	bool normal = true;
+	bool normal = false;
 	float normalTimer = 0.0f;
 
-	bool colourMaterial = true;
+	bool colourMaterial = false;
 	float colourMaterialTimer = 0.0f;
 
 	bool accumulation = true;
